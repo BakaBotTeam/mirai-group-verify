@@ -1,8 +1,6 @@
 package ltd.guimc.mirai.groupverify.listener
 
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 import ltd.guimc.mirai.groupverify.PluginMain
 import ltd.guimc.mirai.groupverify.config.Config
 import ltd.guimc.mirai.groupverify.utils.APIUtils
@@ -15,7 +13,6 @@ import net.mamoe.mirai.contact.checkBotPermission
 import net.mamoe.mirai.event.events.MemberJoinEvent
 import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.PlainText
-import java.util.*
 
 object MemberListener {
     suspend fun onEvent(event: MemberJoinEvent) {
@@ -34,17 +31,10 @@ object MemberListener {
         }
     }
 
-    @OptIn(DelicateCoroutinesApi::class)
-    private fun statusListenerRegister(member: Member, session: String) {
-        Timer().schedule(
-            object : TimerTask() {
-                override fun run() {
-                    GlobalScope.launch {
-                        if (statusTimerTask(member, session)) cancel()
-                    }
-                }
-            }, 2, 2
-        )
+    private suspend fun statusListenerRegister(member: Member, session: String) {
+        while (!statusTimerTask(member, session)) {
+            delay(2000)
+        }
     }
 
     private suspend fun statusTimerTask(member: Member, session: String): Boolean {
