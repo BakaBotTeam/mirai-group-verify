@@ -19,7 +19,6 @@ object PluginMain : KotlinPlugin(
         author("BakaBotTeam")
     }
 ) {
-    lateinit var rootPerm: Permission
     lateinit var enablePerm: Permission
 
     override fun onEnable() {
@@ -37,7 +36,6 @@ object PluginMain : KotlinPlugin(
     }
 
     private fun registerPerms() = PermissionService.INSTANCE.run {
-        rootPerm = register(PermissionId("ltd.guimc.mirai.groupverify", "*"), "Root Permission")
         enablePerm = register(PermissionId("ltd.guimc.mirai.groupverify", "enable"), "启用插件 (群)")
     }
 
