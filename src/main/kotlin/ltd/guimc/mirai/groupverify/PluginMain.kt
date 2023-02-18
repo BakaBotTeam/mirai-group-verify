@@ -1,5 +1,6 @@
 package ltd.guimc.mirai.groupverify
 
+import ltd.guimc.mirai.groupverify.config.Config
 import ltd.guimc.mirai.groupverify.listener.MemberListener
 import net.mamoe.mirai.console.permission.Permission
 import net.mamoe.mirai.console.permission.PermissionId
@@ -25,11 +26,13 @@ object PluginMain : KotlinPlugin(
         logger.info("Mirai Group Verify 正在加载的路上了喵~")
         registerPerms()
         registerEvents()
+        Config.reload()
         logger.info("Mirai Group Verify 加载好啦喵~")
     }
 
     override fun onDisable() {
         logger.info("Mirai Group Verify 正在关闭呢...")
+        Config.save()
         logger.info("Mirai Group Verify 已关闭了喵")
     }
 
